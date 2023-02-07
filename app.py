@@ -1,7 +1,8 @@
-from flask import Flask, redirect, render_template, url_for, request
+from flask import Flask, redirect, render_template, url_for, request, session, flash
 from DB_handler import DBModule
 
 app = Flask(__name__)
+app.secret_key = "dkdkdkdkdkd"
 DB = DBModule()
 
 @app.route("/")
@@ -40,6 +41,7 @@ def signin_done():
     if DB.signin(uid, pwd, name, email):
         return redirect(url_for("index"))
     else: 
+        flash("이미 존재하는 아이디입니다.")
         return redirect(url_for("signin"))
 
 @app.route("/user/<uid>")

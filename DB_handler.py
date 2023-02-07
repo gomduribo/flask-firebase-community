@@ -12,6 +12,14 @@ class DBModule:
     def login(self, id, pwd): #데이터베이스에서 쓸것들 필요
         pass
 
+    def signin_verification(self, uid):
+        users = self.db.child("users").get().val()
+        for i in users:
+            if uid == i:
+                return False
+        
+        return True
+
     def signin(self, _id_, pwd, name, email):
         # print(f"id={_id_} pwd={pwd} name={name} email={email}")
         information = {
@@ -19,7 +27,11 @@ class DBModule:
             "name": name,
             "email": email
         }
-        self.db.child("users").child(_id_).set(information)
+        if self.signin_verification(_id_):
+            self.db.child("users").child(_id_).set(information)
+            return True
+        else:
+            return False
 
     def write_post(self, user, contents):
         pass
