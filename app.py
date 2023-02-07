@@ -29,9 +29,18 @@ def login_done():
 def signin():
     return render_template("signin.html")
 
-@app.route("/signin_done")
+# /signin_done으로 method가 들어올 거니까 get을 추가해주면 get을 받아올수 있다.
+@app.route("/signin_done", methods= ["get"])
 def signin_done():
-    pass
+    email = request.args.get("email")
+    uid = request.args.get("id")
+    pwd = request.args.get("pwd")
+    name = request.args.get("name")
+    
+    if DB.signin(uid, pwd, name, email):
+        return redirect(url_for("index"))
+    else: 
+        return redirect(url_for("signin"))
 
 @app.route("/user/<uid>")
 def user(uid):
