@@ -9,8 +9,17 @@ class DBModule:
         firebase = pyrebase.initialize_app(config)
         self.db = firebase.database()
 
-    def login(self, id, pwd): #데이터베이스에서 쓸것들 필요
-        pass
+    def login(self, uid, pwd): #데이터베이스에서 쓸것들 필요
+        users = self.db.child("users").get().val()
+        try:
+            userinfo = users[uid]
+            print(userinfo)
+            if userinfo["password"] == pwd:
+                return True
+            else:
+                return False
+        except:
+            return False
 
     def signin_verification(self, uid):
         users = self.db.child("users").get().val()

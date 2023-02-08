@@ -20,11 +20,18 @@ def post():
 
 @app.route("/login")
 def login():
-    pass
+    return render_template("login.html")
 
-@app.route("/login_done")
+@app.route("/login_done", methods= ["get"])
 def login_done():
-    pass
+    uid = request.args.get("id")
+    pwd = request.args.get("pwd")
+    if DB.login(uid, pwd):
+        return redirect(url_for("index"))
+    else:
+        flash("아이디가 없가나 비밀번호가 틀립니다.")
+        return redirect(url_for("login"))
+    return "None"
 
 @app.route("/signin")
 def signin():
